@@ -1,0 +1,63 @@
+<h1>Todo List</h1>
+<div class="add-todo">
+  <div>
+    <label for="title">Title: </label>
+    <input type="text" name="title" id="title" [(ngModel)]="newTodo.title" />
+  </div>
+  <div>
+    <label for="date">Date: </label>
+    <input type="date" name="date" id="date" [(ngModel)]="newTodo.date" />
+  </div>
+  <div><button (click)="addTodo()">Add</button></div>
+</div>
+<div class="todo-list">
+  @for (todo of todos; track todo.id) {
+    <div class="todo" [style.color]="isPassed(todo.date) ? '#bbb' : ''" [class.even]="$odd">
+      <h2>
+        @if (editedTodo === todo) {
+          <input type="text" [(ngModel)]="todo.title" />
+        } @else {
+          {{ todo.title }}
+        }
+      </h2>
+      <p>
+        do until:
+        @if (editedTodo === todo) {
+          <input type="date" [(ngModel)]="todo.date" />
+        } @else {
+          {{ todo.date.toDateString() }}
+        }
+      </p>
+      <!-- <p>status: {{todo.status}}</p> -->
+      <span>
+        @switch (todo.status) {
+          @case (0) {
+            ❌
+          }
+          @case (1) {
+            ⏰
+          }
+          @case (2) {
+            ✔
+          }
+        }
+      </span>
+      <div>
+        <button [disabled]="todo.status === 0" (click)="updateTodoStatus(todo, 0)">❌</button>
+        <button [disabled]="todo.status === 1" (click)="updateTodoStatus(todo, 1)">⏰</button>
+        <button [disabled]="todo.status === 2" (click)="updateTodoStatus(todo, 2)">✔</button>
+      </div>
+      <div class="actions">
+        @if (!isPassed(todo.date)) {
+          <button (click)="editTodo(todo)">edit</button>
+        }
+        <button (click)="removeTodo($index)">remove</button>
+      </div>
+      @if ($last) {
+        <p style="color: black;">this is your last todo...</p>
+      }
+    </div>
+  } @empty {
+    <p>you have no todos</p>
+  }
+</div>
