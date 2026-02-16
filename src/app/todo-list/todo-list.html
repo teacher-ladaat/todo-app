@@ -1,5 +1,5 @@
 <h1>Todo List</h1>
-<div class="add-todo">
+<form class="add-todo">
   <div>
     <label for="title">Title: </label>
     <input type="text" name="title" id="title" [(ngModel)]="newTodo.title" />
@@ -9,7 +9,7 @@
     <input type="date" name="date" id="date" [(ngModel)]="newTodo.date" />
   </div>
   <div><button (click)="addTodo()">Add</button></div>
-</div>
+</form>
 <div class="todo-list">
   @for (todo of todos; track todo.id) {
     <div class="todo" [title]="todo.id" [style.opacity]="isPassed(todo.date) ? 0.75 : 1" [class.even]="$odd">
