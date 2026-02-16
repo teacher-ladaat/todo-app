@@ -11,20 +11,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class TodoList {
     todos: Todo[] = [
-        { id: crypto.randomUUID(), title: 'Do Angular HW', date: new Date(2026, 1, 8), status: TodoStatus.InProgress },
-        { id: crypto.randomUUID(), title: 'Clean Home', date: new Date(2026, 1, 24), status: TodoStatus.NotDone },
-        { id: crypto.randomUUID(), title: 'Buy Food', date: new Date(2026, 1, 2), status: TodoStatus.Done },
+        new Todo('Do Angular HW', new Date(2026, 1, 8), TodoStatus.InProgress),
+        new Todo('Clean Home', new Date(2026, 1, 24), TodoStatus.NotDone),
+        new Todo('Buy Food', new Date(2026, 1, 2), TodoStatus.Done),
     ];
     editedTodo?: Todo;
-    newTodo: Todo = {
-        id: '',
-        title: '',
-        date: new Date(),
-        status: TodoStatus.NotDone
-    };
+    newTodo: Todo = new Todo();
 
-    isPassed(d: Date) {
-        return d <= new Date();
+    isPassed(d: Date | string) {
+        return new Date(d) <= new Date();
     }
 
     updateTodoStatus(todo: Todo, status: TodoStatus) {
@@ -32,8 +27,8 @@ export class TodoList {
     }
 
     editTodo(todo: Todo) {
+        todo.isEdited = true;
         if (this.editedTodo === todo) {
-            this.editedTodo.date = new Date(this.editedTodo.date);
             this.editedTodo = undefined;
         } else {
             this.editedTodo = todo;
@@ -41,15 +36,13 @@ export class TodoList {
     }
 
     addTodo() {
-        this.newTodo.date = new Date(this.newTodo.date);
-        this.todos.push(this.newTodo);
+        if (this.newTodo.isValid()) {
+            this.todos.push(this.newTodo);
 
-        this.newTodo = {
-            id: crypto.randomUUID(),
-            title: '',
-            date: new Date(),
-            status: TodoStatus.NotDone
-        };
+            this.newTodo = new Todo();
+        } else {
+            alert('todo is not valid!!!')
+        }
     }
 
     removeTodo(index: number) {

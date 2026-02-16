@@ -12,9 +12,9 @@
 </div>
 <div class="todo-list">
   @for (todo of todos; track todo.id) {
-    <div class="todo" [style.color]="isPassed(todo.date) ? '#bbb' : ''" [class.even]="$odd">
+    <div class="todo" [title]="todo.id" [style.opacity]="isPassed(todo.date) ? 0.75 : 1" [class.even]="$odd">
       <h2>
-        @if (editedTodo === todo) {
+        @if (todo.isEdited) {
           <input type="text" [(ngModel)]="todo.title" />
         } @else {
           {{ todo.title }}
@@ -25,7 +25,8 @@
         @if (editedTodo === todo) {
           <input type="date" [(ngModel)]="todo.date" />
         } @else {
-          {{ todo.date.toDateString() }}
+          <!-- {{ todo.date.toDateString() }} -->
+          {{ todo.date }}
         }
       </p>
       <!-- <p>status: {{todo.status}}</p> -->
@@ -43,9 +44,15 @@
         }
       </span>
       <div>
-        <button [disabled]="todo.status === 0" (click)="updateTodoStatus(todo, 0)">❌</button>
+        @let statuses = ['❌', '⏰', '✔'];
+
+        @for (status of statuses; track $index) {
+            <button [disabled]="isPassed(todo.date) || todo.status === $index" (click)="updateTodoStatus(todo, $index)">{{status}}</button>
+        }
+
+        <!-- <button [disabled]="todo.status === 0" (click)="updateTodoStatus(todo, 0)">❌</button>
         <button [disabled]="todo.status === 1" (click)="updateTodoStatus(todo, 1)">⏰</button>
-        <button [disabled]="todo.status === 2" (click)="updateTodoStatus(todo, 2)">✔</button>
+        <button [disabled]="todo.status === 2" (click)="updateTodoStatus(todo, 2)">✔</button> -->
       </div>
       <div class="actions">
         @if (!isPassed(todo.date)) {
