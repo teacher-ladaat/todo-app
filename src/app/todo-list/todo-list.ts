@@ -27,7 +27,7 @@ export class TodoList {
     }
 
     editTodo(todo: Todo) {
-        todo.isEdited = true;
+        // todo.isEdited = true;
         if (this.editedTodo === todo) {
             this.editedTodo = undefined;
         } else {
