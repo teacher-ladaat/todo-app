@@ -1,9 +1,18 @@
-.todo {
-    border: 1px solid black;
-    margin: 4px;
-    padding: 4px;
-}
+// .todo {
+//     border: 1px solid black;
+//     margin: 4px;
+//     padding: 4px;
+// }
 
 .even {
     background-color: beige;
 }
+
+header * {
+    // height: fit-content;
+    margin: 0;
+}
+
+// button:disabled {
+//     cursor: not-allowed;
+// }

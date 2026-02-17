@@ -1,70 +1,97 @@
-<h1>Todo List</h1>
-<form class="add-todo">
-  <div>
-    <label for="title">Title: </label>
-    <input type="text" name="title" id="title" [(ngModel)]="newTodo.title" />
-  </div>
-  <div>
-    <label for="date">Date: </label>
-    <input type="date" name="date" id="date" [(ngModel)]="newTodo.date" />
-  </div>
-  <div><button (click)="addTodo()">Add</button></div>
-</form>
-<div class="todo-list">
-  @for (todo of todos; track todo.id) {
-    <div class="todo" [title]="todo.id" [style.opacity]="isPassed(todo.date) ? 0.75 : 1" [class.even]="$odd">
-      <h2>
-        @if (todo.isEdited) {
-          <input type="text" [(ngModel)]="todo.title" />
-        } @else {
-          {{ todo.title }}
-        }
-      </h2>
-      <p>
-        do until:
-        @if (editedTodo === todo) {
-          <input type="date" [(ngModel)]="todo.date" />
-        } @else {
-          <!-- {{ todo.date.toDateString() }} -->
-          {{ todo.date }}
-        }
-      </p>
-      <!-- <p>status: {{todo.status}}</p> -->
-      <span>
-        @switch (todo.status) {
-          @case (0) {
-            ❌
-          }
-          @case (1) {
-            ⏰
-          }
-          @case (2) {
-            ✔
-          }
-        }
-      </span>
-      <div>
-        @let statuses = ['❌', '⏰', '✔'];
-
-        @for (status of statuses; track $index) {
-            <button [disabled]="isPassed(todo.date) || todo.status === $index" (click)="updateTodoStatus(todo, $index)">{{status}}</button>
-        }
-
-        <!-- <button [disabled]="todo.status === 0" (click)="updateTodoStatus(todo, 0)">❌</button>
-        <button [disabled]="todo.status === 1" (click)="updateTodoStatus(todo, 1)">⏰</button>
-        <button [disabled]="todo.status === 2" (click)="updateTodoStatus(todo, 2)">✔</button> -->
-      </div>
-      <div class="actions">
-        @if (!isPassed(todo.date)) {
-          <button (click)="editTodo(todo)">edit</button>
-        }
-        <button (click)="removeTodo($index)">remove</button>
-      </div>
-      @if ($last) {
-        <p style="color: black;">this is your last todo...</p>
-      }
+<div class="row">
+  <h1 class="text-center display-1">Todo List</h1>
+</div>
+<div class="row">
+  <form class="col add-todo">
+    <h2 class="display-5">Add Todo</h2>
+    <div class="mb-3">
+      <label class="form-label h6" for="title">Title</label>
+      <input class="form-control" type="text" name="title" id="title" [(ngModel)]="newTodo.title" />
     </div>
-  } @empty {
-    <p>you have no todos</p>
-  }
+    <div class="mb-3">
+      <label class="form-label h6" for="date">Date</label>
+      <input class="form-control" type="date" name="date" id="date" [(ngModel)]="newTodo.date" />
+    </div>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-primary" (click)="addTodo()">Add</button>
+    </div>
+  </form>
+  <div class="col todo-list">
+    @for (todo of todos; track todo.id) {
+      <div
+        class="todo card m-3"
+        [style.opacity]="isPassed(todo.date) ? 0.75 : 1"
+        [class.even]="$odd"
+        [class.text-warning]="$odd"
+      >
+        <header class="card-header">
+          <div class="row">
+            <h2 class="col d-flex justify-content-center align-items-center">
+            @if (editedTodo === todo) {
+                <input class="form-control" type="text" [(ngModel)]="todo.title" />
+              } @else {
+                {{ todo.title }}
+              }
+            </h2>
+            @if ($last) {
+              <p class="alert alert-danger col">this is your last todo!</p>
+            }
+          </div>
+        </header>
+        <div class="card-body">
+          <p>
+            <span class="fw-bolder">do until:</span>
+            @if (editedTodo === todo) {
+              <input class="form-control" type="date" [(ngModel)]="todo.date" />
+            } @else {
+              <!-- {{ todo.date.toDateString() }} -->
+              {{ todo.date }}
+            }
+          </p>
+          <!-- <p>status: {{todo.status}}</p> -->
+          <p>
+            <span class="fw-bolder">status:</span>
+            <span>
+              @switch (todo.status) {
+                @case (0) {
+                  ❌
+                }
+                @case (1) {
+                  ⏰
+                }
+                @case (2) {
+                  ✔
+                }
+              }
+            </span>
+          </p>
+          <div>
+            @let statuses = ['❌', '⏰', '✔'];
+
+            @for (status of statuses; track $index) {
+              <button
+                class="btn btn-outline-primary"
+                [disabled]="isPassed(todo.date) || todo.status === $index"
+                (click)="updateTodoStatus(todo, $index)"
+              >
+                {{ status }}
+              </button>
+            }
+
+            <!-- <button class="btn btn-outline-primary" [disabled]="todo.status === 0" (click)="updateTodoStatus(todo, 0)">❌</button>
+        <button class="btn btn-outline-primary" [disabled]="todo.status === 1" (click)="updateTodoStatus(todo, 1)">⏰</button>
+        <button class="btn btn-outline-primary" [disabled]="todo.status === 2" (click)="updateTodoStatus(todo, 2)">✔</button> -->
+          </div>
+        </div>
+        <div class="card-footer actions row-cols-auto">
+          @if (!isPassed(todo.date)) {
+            <button class="btn btn-outline-info me-2" (click)="editTodo(todo)">edit</button>
+          }
+          <button class="btn btn-outline-info" (click)="removeTodo($index)">remove</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="alert alert-danger">you have no todos</p>
+    }
+  </div>
 </div>
